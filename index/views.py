@@ -10,12 +10,7 @@ from django.template import loader
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMultiAlternatives
 from django.utils.http import urlsafe_base64_encode
-from django.db.models import Q
-from django.shortcuts import get_object_or_404
 from django.urls.base import  reverse
-from datetime import datetime
-from math import floor
-from django.core.exceptions import PermissionDenied
 from index.decorators import superuser_required
 from django.utils.html import strip_tags
 from django.conf import settings
@@ -109,7 +104,7 @@ def registerUser(request):
                 'token': default_token_generator.make_token(NewUser),
             }
             send_mail("email/password_set_email_subject.txt", "email/password_newuser_set_email.html", context,
-                      "no-reply@ieeesb.nl", NewUser.email, html_email_template_name="email/password_newuser_set_email.html")
+                      "no-reply@django_baseproject.nl", NewUser.email, html_email_template_name="email/password_newuser_set_email.html")
 
             return render(request, "base.html", {
                 "Message"   : "User created and notified",
@@ -152,8 +147,6 @@ def login(request):
 
             user = authenticate(username=userobj.username, password=form.cleaned_data['password'])
             if user is not None:
-                if len(user.groups.all()) == 0 and not settings.DEBUG:
-                    return render(request, "base.html", {"Message" : "Students are not allowed to login this way."})
                 if user.is_active:
                     channels.Group('livestream').send({'text':json.dumps({
                         'time' : time.strftime('%H:%M:%S'),
