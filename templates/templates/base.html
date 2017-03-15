@@ -6,7 +6,7 @@
     <link rel="shortcut icon" type="image/png" href="{% static "/favicon.ico"%}" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>django_baseproject</title>
+    <title>PromoniThor Manage</title>
     {% block head %}
     <link href="{% static "css/metro.min.css" %}" rel="stylesheet">
     <link href="{% static "css/metro-icons.min.css" %}" rel="stylesheet">
@@ -23,12 +23,12 @@
 
 {% block menu %}
 <div class="app-bar" data-role="appbar">
-<div class="app-bar-element branding">django_baseproject</div>
+<div class="app-bar-element branding">PromoniThor Manage</div>
 
 <ul class="app-bar-menu">
-    <li><a href="/"><span class="mif-home icon"></span>Home</a></li>
+    <li><a href="/"><span class="mif-home icon"></span>Viewer</a></li>
+    <li><a href="{% url "index:posteronly" %}"><span class="mif-home icon"></span>Viewer poster_only</a></li>
     {% if user.is_authenticated %}
-
         {% if user.is_superuser %}
             <li>
                 <a href="" class="dropdown-toggle"></span>GodPowers</a>
@@ -37,16 +37,24 @@
                 </ul>
             </li>
         {% endif %}
+        <li><a href="{% url "manager:list" %}"><span class="mif-home icon"></span>List</a></li>
+        <li>
+            <a href="" class="dropdown-toggle"></span>Upload poster</a>
+            <ul class="d-menu" data-role="dropdown">
+                <li><a href="{% url "manager:upload" 'i' %}">Image</a></li>
+                <li><a href="{% url "manager:upload" 'o' %}">Other</a></li>
+            </ul>
+        </li>
     {% endif %}
-    <li><a href="{% url 'index:about' %}"><span class="mif-info icon"></span>About</a></li>
+    <li><a href="{% url 'manager:about' %}"><span class="mif-info icon"></span>About</a></li>
 </ul>
 <div class="app-bar-pullbutton automatic"></div>
 <ul class="app-bar-menu place-right" data-flexdirection="reverse">
     {%  if user.is_authenticated %}
-    <li><a href="{% url 'index:profile' %}"><span class="mif-user icon"></span>{{ user }} Profile</a></li>
-    <li><a href="{%  url 'index:logout' %}"><span class="mif-vpn-lock icon"></span>Logout</a></li>
+    <li><a href="{% url 'manager:profile' %}"><span class="mif-user icon"></span>{{ user }} Profile</a></li>
+    <li><a href="{%  url 'manager:logout' %}"><span class="mif-vpn-lock icon"></span>Logout</a></li>
     {%  else %}
-    <li><a href="{% url 'index:login' %}"><span class="mif-vpn-lock icon"></span>Login</a></li>
+    <li><a href="{% url 'manager:login' %}"><span class="mif-vpn-lock icon"></span>Login</a></li>
     {%  endif %}
 </ul>
 </div>
@@ -102,12 +110,11 @@
 <div class="place-right text-small">
     <div class="cell place-left padding10"><a href="http://www.djangoproject.com/"><img src="https://www.djangoproject.com/m/img/badges/djangosite80x15_grey.gif" border="0" alt="A Django site." title="A Django site." /></a></div>
     <div class="cell place-left padding10"><a href="http://metroui.org/" title="MetroUI CSS">MetroUI CSS</a> </div>
-    <div class="cell place-left padding10" onclick="roll('li')">By: Frank Boerman 2017</div>
+    <div class="cell place-left padding10" onclick="roll('li')">By: Jeroen van Oorschot 2017</div>
     <div class="cell place-left padding10">Currently deployed: {% GetHash %}</div>
 </div>
 </div>
 {% block scripts %}
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
     <script src="{%  static "js/metro.min.js" %}"></script>

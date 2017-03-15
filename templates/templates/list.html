@@ -1,0 +1,40 @@
+{# list own applications for students #}
+{% extends "base.html" %}
+{% block body %}
+<h1>Posters</h1>
+
+    <table class="table">
+    <thead>
+    <th>Type</th>
+    <th>Preview</th>
+    <th>Caption</th>
+    <th>Name</th>
+    <th>Created</th>
+    <th>Last updated</th>
+    <th>User</th>
+    <th>End date/time</th>
+    <th>Edit:</th>
+    </thead>
+        {% for typeset in posters %}
+            {% for p in typeset.data %}
+                <tr>
+                    <td><span class="icon mif-file-{{ p.metro_icon }}"></span></td>
+                    <td>
+                        {% if typeset.type == 'i' %}
+                            <img src="{{ p.File.url }}" />
+                        {% else %}
+                            <span>{{ p.File.url }}</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ p.Caption }}</td>
+                    <td>{{ p.OriginalName }}</td>
+                    <td>{{ p.TimeStampCreate }}</td>
+                    <td>{{ p.TimeStampUpdated }}</td>
+                    <td>{{ p.User.get_full_name }}({{ p.User }})</td>
+                    <td>{{ p.EndDateTime }}</td>
+                    <td><a href="#" class="button warning">Delete</a><a href="#" class="button default">Edit</a></td>
+                </tr>
+            {% endfor %}
+        {% endfor %}
+    </table>
+{% endblock %}

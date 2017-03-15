@@ -1,12 +1,12 @@
-from django.forms.widgets import Input, Select, TextInput, CheckboxInput, FileInput
-from django.utils.html import format_html, conditional_escape
-from django.utils import formats
 from django.forms.utils import flatatt
-from django.utils.safestring import mark_safe
+from django.forms.widgets import Select, TextInput, CheckboxInput, FileInput, DateTimeInput, TimeInput, DateInput
+from django.utils import formats
 from django.utils.datastructures import MultiValueDict
 from django.utils.encoding import (
-    force_str, force_text, python_2_unicode_compatible,
-)
+    force_text, )
+from django.utils.html import format_html
+from django.utils.safestring import mark_safe
+
 
 class MetroTextInput(TextInput):
 
@@ -121,3 +121,52 @@ class MetroFileInput(FileInput):
             return formats.localize_input(value)
         return value
 
+class MetroTimeInput(TimeInput):
+    """
+    A time input with 5 minute steps, using H:i
+    converted to a nice picker using jquery datetimepicker in genericForm.html
+    """
+    input_type = 'text'
+
+    def __init__(self, *args, **kwargs):
+        # setting input-control class gives the same metro look, but without the wrapping div around the input
+        # the class metrotimepicker is used by the javascript lib
+        kwargs['attrs'] = {'class': 'metrotimepicker input-control'}
+        super(MetroTimeInput, self).__init__(*args, **kwargs)
+
+
+class MetroDateInput(DateInput):
+    """
+    A date input, Date ranging from yesterday to last day of this timeslot. Using Y-m-d
+    converted to a nice picker using jquery datetimepicker in genericForm.html
+    """
+    input_type = 'text'
+
+    def __init__(self, *args, **kwargs):
+        # setting input-control class gives the same metro look, but without the wrapping div around the input
+        # the class metrodatepicker is used by the javascript lib
+        kwargs['attrs'] = {'class': 'metrodatepicker input-control'}
+        super(MetroDateInput, self).__init__(*args, **kwargs)
+
+
+class MetroDateTimeInput(DateTimeInput):
+    """
+    A date & time input, Date ranging from yesterday to last day of this timeslot. Time in 5 minute steps.
+    Format: Y-m-d H:i
+    converted to a nice picker using jquery datetimepicker in genericForm.html
+    """
+    input_type = 'text'
+
+    def __init__(self, *args, **kwargs):
+        # setting input-control class gives the same metro look, but without the wrapping div around the input
+        # the class metrodatetimepicker is used by the javascript lib
+        kwargs['attrs'] = {'class': 'metrodatetimepicker input-control'}
+        super(MetroDateTimeInput, self).__init__(*args, **kwargs)
+
+
+class MetroEmailInput(MetroTextInput):
+    input_type = 'email'
+
+
+class MetroNumberInput(MetroTextInput):
+    input_type = 'number'

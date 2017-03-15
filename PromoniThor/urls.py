@@ -22,6 +22,8 @@ urlpatterns = [
     url(r'^impersonate/', include('impersonate.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^', include('index.urls')),
+    url(r'^manager/', include('manager.urls')),
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = 'index.views.error404'
