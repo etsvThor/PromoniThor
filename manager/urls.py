@@ -11,5 +11,7 @@ urlpatterns = [
     url(r'^clearcache/$', views.clear_cache, name='clearcache'),
     url(r'^upload/(?P<ty>[a-z]{1})/$', views.upload, name='upload'),
     url(r'^list/$', views.list, name='list'),
+    url(r'^edit/(?P<poster>[0-9]+)/$', views.edit, name='edit'),
+    url(r'^delete/(?P<poster>[0-9]+)/$', views.delete, name='delete'),
     url(r'^$', views.index, name='index')
 ]

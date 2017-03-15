@@ -1,0 +1,66 @@
+/*
+Jeroen van Oorschot 2015
+CSS file for Thor Postermonitor, general, animations
+*/
+html,body{
+	margin:0px;
+	padding:0px;
+	height:100%;
+	overflow:hidden;
+	position: relative;	
+}
+body{
+	font-family: 'segoe ui semibold','Trebuchet MS',Verdana, Geneva, sans-serif;
+	font-size:11px; /*relative font size of all texts*/
+	background-color:#ac2121;
+	-webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+/****************************************/
+/*Poster change animations              */
+/****************************************/
+
+.fadeIn{
+	animation: fadeInFromNone 0.2s steps(2, end);
+	animation-fill-mode: forwards;  
+}
+.fadeOut{
+	animation: fadeOutFromNone 0.2s steps(2,end);
+	animation-fill-mode: forwards;  
+}
+
+@keyframes fadeInFromNone {
+	from {
+        opacity: 0;
+		visibility:hidden;
+    }
+    to {
+		visibility:visible;
+        opacity: 1;
+    }
+}
+@keyframes fadeOutFromNone {
+	from{
+        opacity: 1;
+		visibility:visible;
+    }
+    to {
+		visibility:hidden;
+        opacity: 0;
+    }
+}
+.imgPoster{
+	display:block;
+	position:absolute;
+	top: 0px;
+	left: 0px;
+	width:100%;
+	height:100%;
+	object-fit: contain;
+	visibility:hidden;
+    opacity: 0;
+}

@@ -1,12 +1,57 @@
 from django.shortcuts import render
-
+from django.http import JsonResponse
+from manager.models import PosterImage
+from datetime import datetime
 
 def index_viewer(request):
-    return render(request, "index.html")
+    """
+    The normal posterviewer with activities and thumbslider
+    :param request:
+    :return:
+    """
+    return render(request, "viewer.html")
 
 
 def index_posteronly(request):
-    return render(request, "index.html")
+    """
+    Posterviewer with only the poster window.
+    :param request:
+    :return:
+    """
+    return render(request, "viewer_poster_only.html")
+
+
+def load_posters(request, res=1080):
+    """
+    Return a chronological list of all poster filenames to display
+    :param request:
+    :param res: - Horizontal resolution of the image
+    :return:
+    """
+    posters = PosterImage.objects.filter(EndDateTime__gt= datetime.now()).order_by('EndDateTime')
+    list = []
+    for p in posters:
+        list.append(p.File.url)
+    return JsonResponse(list, safe=False)
+
+
+def load_thumbs(request):
+    """
+    Thumbs for in the bottom bar, if posterthumbnails are NOT used. This can be used for sponsorimages
+    :param request:
+    :return:
+    """
+    return JsonResponse([], safe=False)
+
+
+def load_activities(request):
+    """
+    Load the list of activities from the sharepoint calendar
+    :param request:
+    :return:
+    """
+    return JsonResponse([{"tit":"[THOR] Ivaldi colour party","ass":"thor","loc":False,"sta":1489678200,"end":1489687200,"ald":False}], safe=False)
+
 
 def error400(request):
     return render(request, "base.html", context={

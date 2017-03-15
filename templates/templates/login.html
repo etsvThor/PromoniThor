@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block body %}
     <table class="table">
-<form action="{% url 'index:login' %}{{ get }}" method="post">
+<form action="{% url 'manager:login' %}{{ get }}" method="post">
 {%  csrf_token %}
     <tr>
         <td style="width:30%;">

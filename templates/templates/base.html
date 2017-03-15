@@ -26,20 +26,20 @@
 <div class="app-bar-element branding">PromoniThor Manage</div>
 
 <ul class="app-bar-menu">
-    <li><a href="/"><span class="mif-home icon"></span>Viewer</a></li>
-    <li><a href="{% url "index:posteronly" %}"><span class="mif-home icon"></span>Viewer poster_only</a></li>
+    <li><a href="/"><span class="mif-display icon"></span>Viewer</a></li>
+    <li><a href="{% url "index:posteronly" %}"><span class="mif-display icon"></span>Viewer poster_only</a></li>
     {% if user.is_authenticated %}
         {% if user.is_superuser %}
             <li>
-                <a href="" class="dropdown-toggle"></span>GodPowers</a>
+                <a href="" class="dropdown-toggle"><span class="mif-wrench icon"></span>Admin</a>
                 <ul class="d-menu" data-role="dropdown">
                     <li><a href="/admin/">Django admin</a></li>
                 </ul>
             </li>
         {% endif %}
-        <li><a href="{% url "manager:list" %}"><span class="mif-home icon"></span>List</a></li>
+        <li><a href="{% url "manager:list" %}"><span class="mif-list icon"></span>List</a></li>
         <li>
-            <a href="" class="dropdown-toggle"></span>Upload poster</a>
+            <a href="" class="dropdown-toggle"><span class="mif-upload icon"></span>Upload poster</a>
             <ul class="d-menu" data-role="dropdown">
                 <li><a href="{% url "manager:upload" 'i' %}">Image</a></li>
                 <li><a href="{% url "manager:upload" 'o' %}">Other</a></li>

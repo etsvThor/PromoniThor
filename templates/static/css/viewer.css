@@ -1,0 +1,295 @@
+/*
+Jeroen van Oorschot 2015
+CSS file for Thor Postermonitor, posterviewer
+*/
+
+/****************************************/
+/*size independent parts of above styles*/
+/****************************************/
+div#container{ 
+	position: absolute;
+	top: 10px;
+	left: 10px;
+}
+div.poster{
+	position: absolute;
+	right:0px;
+	top: 0px;
+	/*overflow:hidden;*/
+	/*border-radius:10px;*/
+	background: #a7a7a7;
+}
+div#thumbbar{/*footer*/
+	position:absolute;
+	/*attach to bottom right of container*/
+	bottom:0px;
+	right: 0px;
+	/*padding-left: 1.5em;*/
+	background-color: #a7a7a7;	*/
+}
+div#sidebar{
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	/*background-color:blue;*/
+}
+div#general{
+	position:absolute;
+	right: 0px;
+	bottom: 0px;
+	/*padding: 0.5em;*/
+	background: #a7a7a7;
+	color: #333;
+}
+/*the activities*/
+div#activities{
+	position:absolute;
+	left:0px;
+	top:0px;
+	padding-left:10px; /*spacing for the activitieslist*/
+	background-color:#a7a7a7;
+	overflow:hidden;
+}
+
+/*************************/
+/*window dependent styles*/
+/*************************/
+@media all and (max-width:959px){
+	div{
+		visibility:hidden;
+	}
+	div.container{
+		visibility:visible;
+	}
+	canvas#clock{
+		visibility:visible;
+	}
+}
+@media all and (min-width:959px){
+div#container{ 
+	width: 940px;
+	height: 520px;
+}
+div.poster{
+	width: 720px;
+	height: 405px;
+}
+div#thumbbar{/*footer*/
+	width: 720px;
+	height: 105px;	
+}
+/*everything on the left side*/
+div#sidebar{
+	width: 210px;
+	height: 520px;
+}
+/*clock and date*/
+div#general{
+	width: 210px;
+	height: 105px;	
+}
+canvas#clock{
+	height: 95px;
+	width: 95px;
+}
+/*activity list*/
+div#activities{
+	width: 200px;
+	height: 405px;
+	font-size:0.9em;
+}
+#day, #date{
+	font-size:1em;
+}
+img.thumb{
+	height:85px;
+}
+}
+@media all and (min-width:1359px){
+div#container{ 
+	width: 1340px;
+	height: 748px;
+}
+div.poster{
+	width: 1024px;
+	height: 576px;
+}
+div#thumbbar{/*footer*/
+	width: 1024px;
+	height: 162px;	
+}
+/*everything on the left side*/
+div#sidebar{
+	width: 306px;
+	height: 748px;
+}
+/*clock and date*/
+div#general{
+	width: 306px;
+	height: 162px;	
+}
+
+canvas#clock{
+	height: 152px;
+	width: 152px;
+}
+/*activity list*/
+div#activities{
+	width: 296px;
+	height: 576px;
+	font-size:1em;
+}
+#day, #date{
+	font-size:2.5em;
+}
+
+img.thumb{
+	height:142px;
+}
+}
+@media all and (min-width:1919px){
+div#container{ 
+	width: 1900px;
+	height: 1060px;
+}
+div.poster{
+	width: 1440px;
+	height: 810px;
+}
+div#thumbbar{/*footer*/
+	width: 1440px;
+	height: 240px;	
+}
+/*everything on the left side*/
+div#sidebar{
+	width: 450px;
+	height: 1060px;
+}
+/*clock and date*/
+div#general{
+	width: 450px;
+	height: 240px;	
+}
+
+canvas#clock{
+	height: 230px;
+	width: 230px;
+}
+/*activity list*/
+div#activities{
+	width: 440px;
+	height: 810px;
+	font-size:1.3em;
+}
+#day, #date{
+	font-size:3em;
+}
+
+img.thumb{
+	height:220px;
+}
+}
+/*****************/
+/*All other items*/
+/*****************/
+
+div.posterview{
+	background-size:contain;
+	background-repeat:no-repeat;
+	background-position:center;
+}
+/***************
+Thumbs, sponsors or posterthumbs
+***************/
+div#thumbcontainer{
+	top:10px;
+	left:10px;
+	right:10px;
+	bottom:10px;
+	position:absolute;
+	overflow:hidden;
+}
+div#thumblist{
+	list-style:none;
+	margin:0px; /* to override the browser default margin and padding for a UL*/
+	padding:0px;
+	position:absolute; /*such that jquery calculates the thumblocations relative to this UL*/
+	display: flex; /*to make the box as wide as needed to fit all thumbs in one row*/
+ 	transition: 1s ease-in-out; /*to make the sliding transition animate*/
+}
+img.thumb{ /* a sponsor image*/
+	max-height:99%;
+	margin-right:10px; /*all other margins are handled by #thumbcontainer*/
+}
+
+/*sidebar contains clock and activities*/
+#time, #daydate{
+	padding-top:2em;
+	position:absolute;
+	width: 45%;
+	height: 99%;
+	font-weight:bold;
+}
+#time{
+	left:0px;
+}
+/*block containing the day and date*/
+#daydate{
+	right:0px;
+}
+/*day and date blocks*/
+/*#day, #date{
+	font-size:2.5em;
+	width: 100%;
+}*/
+/*clock*/
+canvas#clock{
+	position: absolute;
+	top:5px;
+	left:5px;
+}
+
+/*********************/
+/*Activity  specific */
+/*********************/
+
+/*some spacing between activities*/
+div.activity{
+	margin-bottom: 0.5em;
+}
+/* activity title*/
+h2{
+	word-wrap:break-word;
+	
+	font-size: 2em;
+	font-weight: bold;
+	display:inline;
+	/*text-shadow: -0.02em 0.02em 0.4em #FFF;*/
+}
+/* activity date*/
+h3{
+	font-size: 1.5em;
+	margin: 0px;
+	margin-left: 1em;
+	color: #333;
+}
+div.activity.gen > h2{
+	color: #333;/* Color for general activities*/
+}
+/*ieee activity*/
+div.activity.ieee > h2{
+	color: rgb(0,83,159);
+}
+/*waldur activity*/
+div.activity.waldur > h2{
+	/*color: rgb(190,151,4);*/
+	color: rgb(255,203,5);/* the official waldur color*/
+}
+div.activity.thor > h2{
+	/*color: rgb(190,151,4);*/
+	color: #ac2121;/* the official waldur color*/
+}
+/*odin activity*/
+div.activity.odin > h2{
+	color: #221F72;
+}

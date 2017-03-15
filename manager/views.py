@@ -7,7 +7,7 @@ from django.core.cache import cache
 from django.core.exceptions import PermissionDenied
 from django.core.mail import EmailMultiAlternatives
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.template import loader
 from django.urls.base import  reverse
 from django.utils.html import strip_tags
@@ -21,7 +21,7 @@ def goto_next_or_home(request):
     if 'next' in request.GET.keys():
         print(request.GET["next"])
         return HttpResponseRedirect(str(request.GET["next"]))
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/manager/')
 
 
 def index(request):
@@ -151,3 +151,25 @@ def list(request):
         {"type": "i","data": images},
          {"type": "o", "data": others}
     ]})
+
+
+def delete(request, poster):
+    """
+    Remove a poster
+    :param request:
+    :param poster:
+    :return:
+    """
+    #TODO
+    return None
+
+
+def edit(request, poster):
+    """
+    Edit a poster file, endatetime or caption
+    :param request:
+    :param poster:
+    :return:
+    """
+    #TODO
+    return None

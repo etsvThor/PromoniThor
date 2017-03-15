@@ -1,0 +1,26 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!--
+        Jeroen van Oorschot 2015-2017
+        e.t.s.v. Thor Eindhoven posterviewer
+        -->
+        <meta http-equiv="refresh" content="7200"><!--Do a regular refresh to prevent memory leak problems on raspberry pi and for software updates-->
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" href="{% static 'css/viewer.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/general.css'%}" />
+        <title>Thor Postermonitor</title><link type="text/css" rel="stylesheet" href="css/viewer_poster_only.css" />
+    </head>
+    <body>
+        <div id="container">
+            <div class="poster" id="posterBg"></div>
+            <div class="poster posterview" id="posterview1"></div>
+            <!--<div class="poster posterview" id="posterview2"></div>-->
+         </div>
+
+        <!-- Load Javascript includes-->
+        <script src="{% static 'js/jquery-3.0.0.min.js' %}"></script>
+        <script src="{% static 'js/viewer.js' %}"></script>
+    </body>
+</html>

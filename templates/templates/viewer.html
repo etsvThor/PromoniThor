@@ -1,0 +1,46 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!--
+        Jeroen van Oorschot 2015-2017
+        e.t.s.v. Thor Eindhoven posterviewer
+        -->
+        <meta http-equiv="refresh" content="7200"><!--Do a regular refresh to prevent memory leak problems on raspberry pi and for software updates-->
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link rel="stylesheet" href="{% static 'css/viewer.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/general.css'%}" />
+        <title>Thor Postermonitor</title>
+    </head>
+    <body>
+        <div id="container">
+            <div id="sidebar" class="main">
+                <div id="general">
+                    <div id="time"><canvas id="clock" width="230" height="230"></canvas></div>
+                    <div id="daydate">
+                    <iframe src="https://gadgets.buienradar.nl/gadget/zoommap?lat=51.44083&lng=5.47778&overname=2&zoom=13&naam=eindhoven&size=1&voor=1" width="120" height="200" scrolling="no" style="border: none;
+        margin-left: 20px;
+    "></iframe><!--
+                        <div id="day"></div>
+                        <br />
+                        <div id="date"></div>-->
+                    </div>
+                </div>
+                <div id="activities">
+                    <div id="activitiesContainer"></div>
+                </div>
+            </div>
+            <div class="poster" id="posterBg"></div>
+            <div class="poster posterview" id="posterview1"></div>
+            <div id="thumbbar" class="main">
+                <div id="thumbcontainer">
+                    <div id="thumblist"></div>
+                </div>
+            </div>
+        </div>
+        <!-- Load Javascript includes-->
+        <script src="{% static 'js/jquery-3.0.0.min.js' %}"></script>
+        <script src="{% static 'js/viewer.js' %}"></script>
+        <script src="{% static 'js/clock.js' %}"></script>
+    </body>
+</html>
