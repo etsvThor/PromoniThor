@@ -1,0 +1,35 @@
+{# list own applications for students #}
+{% extends "base.html" %}
+{% block body %}
+<h1>Posters</h1>
+
+    <table class="table">
+    <thead>
+    <th>Type</th>
+    <th>Preview</th>
+    <th>Caption</th>
+    <th>Name</th>
+    <th>Created</th>
+    <th>Last updated</th>
+    <th>User</th>
+    <th>End date/time</th>
+    <th>Edit:</th>
+    </thead>
+        {% for p in posters %}
+            <tr>
+                <td>{{ p.Type.get_status_display }}</td>
+                <td><span class="icon mif-file-{{ p.metro_icon }}"></span></td>
+                <td>
+                    <img src="{{ p.Image.url }}" />
+                </td>
+                <td>{{ p.Caption }}</td>
+                <td>{{ p.OriginalName }}</td>
+                <td>{{ p.TimeStampCreate }}</td>
+                <td>{{ p.TimeStampUpdated }}</td>
+                <td>{{ p.User.get_full_name }}({{ p.User }})</td>
+                <td>{{ p.EndDateTime }}</td>
+                <td><a href="{% url "manager:delete" p.id %}" class="button warning">Delete</a><a href="{% url "manager:edit" p.id %}" class="button default">Edit</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

@@ -1,0 +1,28 @@
+{# list own applications for students #}
+{% extends "base.html" %}
+{% block body %}
+<h1>Posters</h1>
+<p>Data is updated on login of the user.</p>
+    <table class="table">
+    <thead>
+    <th>Name</th>
+    <th>First name</th>
+    <th>Cohort</th>
+    <th>Study</th>
+    <th>Banned</th>
+    <th>Last active</th>
+    <th>Changelog</th>
+    </thead>
+        {% for u in users %}
+            <tr>
+                <td>{{ u.UserMeta.FullName }}</td>
+                <td>{{ u.first_name }}</td>
+                <td>{{ u.UserMeta.Cohort }}</td>
+                <td>{{ u.UserMeta.Study }}</td>
+                <td>{{ u.UserMeta.Banned }}</td>
+                <td>{{ u.last_login|date:'H:i d-m-Y' }}</td>
+                <td><a href="{% url "changelog:user" u.id %}" class="button default">Changelog</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

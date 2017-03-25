@@ -27,7 +27,7 @@
 
 <ul class="app-bar-menu">
     <li><a href="/"><span class="mif-display icon"></span>Viewer</a></li>
-    <li><a href="{% url "index:posteronly" %}"><span class="mif-display icon"></span>Viewer poster_only</a></li>
+    <li><a href="{% url "index:posteronly" %}"><span class="mif-display icon"></span>Viewer poster only</a></li>
     {% if user.is_authenticated %}
         {% if user.is_superuser %}
             <li>
@@ -41,17 +41,20 @@
         <li>
             <a href="" class="dropdown-toggle"><span class="mif-upload icon"></span>Upload poster</a>
             <ul class="d-menu" data-role="dropdown">
-                <li><a href="{% url "manager:upload" 'i' %}">Image</a></li>
-                <li><a href="{% url "manager:upload" 'o' %}">Other</a></li>
+                <li><a href="{% url "manager:upload" 1 %}">Image</a></li>
+                <li><a href="{% url "manager:upload" 2 %}">Video</a></li>
             </ul>
         </li>
+        <li><a href="{% url "manager:users" %}"><span class="mif-user icon"></span>Users</a></li>
+        <li><a href="{% url "changelog:changelog" %}"><span class="mif-user-check icon"></span>Changelog</a></li>
+
     {% endif %}
     <li><a href="{% url 'manager:about' %}"><span class="mif-info icon"></span>About</a></li>
 </ul>
 <div class="app-bar-pullbutton automatic"></div>
 <ul class="app-bar-menu place-right" data-flexdirection="reverse">
     {%  if user.is_authenticated %}
-    <li><a href="{% url 'manager:profile' %}"><span class="mif-user icon"></span>{{ user }} Profile</a></li>
+    <li><a href="{% url 'manager:profile' %}"><span class="mif-profile icon"></span>{{ user }} Profile</a></li>
     <li><a href="{%  url 'manager:logout' %}"><span class="mif-vpn-lock icon"></span>Logout</a></li>
     {%  else %}
     <li><a href="{% url 'manager:login' %}"><span class="mif-vpn-lock icon"></span>Login</a></li>
@@ -74,13 +77,8 @@
                 <p>{{ Message }}</p>
                 {% endautoescape %}
                 {% endif %}
-                {%  if return %}
-                    {% if returnget %}
-                        <a href="{% url return returnget %}">
-                    {% else %}
-                        <a href="{% url return %}">
-                    {% endif %}
-                    <button class="button primary">Return</button></a>
+                {% if return %}
+                        <a href="{% url return %}" class="button primary">Return</a>
                 {% endif %}
             {%  endblock %}
         </div>

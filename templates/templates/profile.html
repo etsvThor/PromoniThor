@@ -1,4 +1,16 @@
 {% extends "base.html" %}
 {% block body %}
-hello {{ user.get_full_name }}
+<h1>User info</h1>
+<p>Data is updated on login of the user.</p>
+{% with request.user as u %}
+    <table class="table">
+    <tr><td>Name</td> <td>{{ u.UserMeta.FullName }}</td> </tr>
+    <tr><td>First name</td> <td>{{ u.first_name }}</td> </tr>
+    <tr><td>Cohort</td> <td>{{ u.UserMeta.Cohort }}</td> </tr>
+    <tr><td>Study</td> <td>{{ u.UserMeta.Study }}</td> </tr>
+    <tr><td>Banned</td> <td>{{ u.UserMeta.Banned }}</td> </tr>
+    <tr><td>Last active</td> <td>{{ u.last_login|date:'H:i d-m-Y' }}</td> </tr>
+    <tr><td>Changelog</td> <td><a href="{% url "changelog:user" u.id %}" class="button default">Changelog</a></td> </tr>
+    </table>
+    {% endwith %}
 {% endblock %}

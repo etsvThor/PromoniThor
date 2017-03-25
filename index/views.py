@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from manager.models import PosterImage
+from manager.models import Poster
 from datetime import datetime
 
 def index_viewer(request):
@@ -28,7 +28,7 @@ def load_posters(request, res=1080):
     :param res: - Horizontal resolution of the image
     :return:
     """
-    posters = PosterImage.objects.filter(EndDateTime__gt= datetime.now()).order_by('EndDateTime')
+    posters = Poster.objects.filter(EndDateTime__gt= datetime.now()).order_by('EndDateTime')
     list = []
     for p in posters:
         list.append(p.File.url)
@@ -54,20 +54,23 @@ def load_activities(request):
 
 
 def error400(request):
-    return render(request, "base.html", context={
+    return render(request, "base.html", status=400, context={
         "Message":"Your browser send an invalid request. Please have a look at the <a href=\"/\">homepage</a>"
     })
 
+
 def error404(request):
-    return render(request, "base.html", context={
+    return render(request, "base.html", status=404, context={
         "Message":"The page you are looking for does not exist. Please have a look at the <a href=\"/\">homepage</a>"
     })
 
+
 def error403(request, exception):
-    return render(request, "403.html", {"exception": exception})
+    return render(request, "403.html", status=403, context={"exception": exception})
+
 
 def error500(request):
-    return render(request, "base.html", context={
+    return render(request, "base.html", status=500, context={
         "Message" : "Something went wrong in the server. The developer team has been automatically notified. </br>"
                     "Please help them by sending an email to <a href=\"mailto:info@django_baseproject.nl?subject=BugReport\">info@django_baseproject.nl</a> with more information what you were trying to do. <br/>"
                     "Thanks in advance!"

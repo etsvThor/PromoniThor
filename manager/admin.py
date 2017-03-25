@@ -1,5 +1,4 @@
 from django.contrib import admin
-from .models import PosterImage, PosterOther
+from .models import Poster
 
-admin.site.register(PosterImage)
-admin.site.register(PosterOther)
+admin.site.register(Poster)

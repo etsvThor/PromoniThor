@@ -1,0 +1,35 @@
+{# list own applications for students #}
+{% extends "base.html" %}
+{% block body %}
+<h1>Poster changes</h1>
+    <p>The preview is the current image. The name, caption and enddatetime are <u>before</u> the change.</p>
+    <table class="table">
+    <thead>
+    <th>TimeStamp</th>
+    <th>Change</th>
+    <th>User</th>
+    <th>Type</th>
+    <th>Preview</th>
+    <th>Caption</th>
+    <th>Name</th>
+    <th>End date/time</th>
+    </thead>
+        {% for c in changes %}
+            {% with c.Poster as p %}
+            <tr>
+                <td>{{ c.TimeStamp|date:"H:i d-m-Y" }}</td>
+                <td>{{ c.Change }}</td>
+                <td>{{ c.User.usermeta.FullName }}({{ p.User }})</td>
+                <td>{{ p.Type.get_status_display }}</td>
+                <td>
+                    <img src="{{ p.Image.url }}" />
+                </td>
+                <td>{{ c.Caption }}</td>
+                <td>{{ c.OriginalName }}</td>
+                <td>{{ c.EndDateTime }}</td>
+
+            </tr>
+            {% endwith %}
+        {% endfor %}
+    </table>
+{% endblock %}

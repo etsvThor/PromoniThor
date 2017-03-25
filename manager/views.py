@@ -9,13 +9,14 @@ from django.core.mail import EmailMultiAlternatives
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.template import loader
-from django.urls.base import  reverse
+from django.urls.base import reverse
 from django.utils.html import strip_tags
+from django.db.models import Q
 
 from index.decorators import superuser_required
-from manager.forms import PosterImageFormAdd, PosterOtherFormAdd, LoginForm
-from manager.models import PosterImage, PosterOther
-
+from manager.forms import PosterImageFormAdd, PosterVideoFormAdd, LoginForm
+from manager.models import Poster
+from changelog.models import Change
 
 def goto_next_or_home(request):
     if 'next' in request.GET.keys():
@@ -72,13 +73,17 @@ def clear_cache(request):
     return render(request, "base.html", {"Message":"Cache cleared!"})
 
 
+def users(request):
+    users = User.objects.all()
+    return render(request, "listusers.html", {"users": users})
+
 
 @login_required
 def profile(request):
     vars = {
 
     }
-    return render(request, "profile.html",vars)
+    return render(request, "profile.html", vars)
 
 
 def login(request):
@@ -118,24 +123,32 @@ def login(request):
 
 @login_required
 def upload(request, ty):
-    if ty == "i":
-        ty = "image"
+    ty = int(ty)
+    if ty == Poster.TYPE_IMAGE:
         form = PosterImageFormAdd
-    elif ty == "o":
-        ty = "other"
-        form = PosterOtherFormAdd
+    elif ty == Poster.TYPE_VIDEO:
+        form = PosterVideoFormAdd
     else:
         raise PermissionDenied("Invalid upload type.")
+
     if request.method == 'POST':
         form = form(request.POST, request.FILES, request=request)
         if form.is_valid():
-            file = form.save(commit=False)
-            file.User = request.user
-            file.save()
+            poster = form.save(commit=False)
+            poster.User = request.user
+            poster.Type = ty
+            poster.save()
+            Change(Change=Change.CHANGE_UPLOAD,
+                   Poster=poster,
+                   Caption=poster.Caption,
+                   OriginalName=poster.OriginalName,
+                   EndDateTime=poster.EndDateTime,
+                   User=request.user,
+                   ).save()
             return render(request, "base.html",
-                          {"Message": "Your file was uploaded"})
+                          {"Message": "Your file was uploaded", "return": "manager:list"})
     return render(request, 'GenericForm.html',
-                  {'form': form, 'formtitle': 'Add ' + ty + ' poster', 'buttontext': 'Save'})
+                  {'form': form, 'formtitle': 'Add ' + Poster.types[ty-1][1] + ' poster', 'buttontext': 'Save'})
 
 
 @login_required
@@ -145,12 +158,8 @@ def list(request):
     :param request:
     :return:
     """
-    images = PosterImage.objects.filter(EndDateTime__gt= datetime.now())
-    others= PosterOther.objects.filter(EndDateTime__gt= datetime.now())
-    return render(request, "list.html", {"posters":[
-        {"type": "i","data": images},
-         {"type": "o", "data": others}
-    ]})
+    posters = Poster.objects.filter(Q(EndDateTime__gt= datetime.now()) & Q(Deleted=False))
+    return render(request, "listposters.html", {"posters":posters})
 
 
 def delete(request, poster):
@@ -160,8 +169,17 @@ def delete(request, poster):
     :param poster:
     :return:
     """
-    #TODO
-    return None
+    obj = get_object_or_404(Poster, id=poster)
+    obj.Deleted = True
+    obj.save()
+    Change(Change=Change.CHANGE_DELETE,
+           Poster=obj,
+           Caption=obj.Caption,
+           OriginalName=obj.OriginalName,
+           EndDateTime=obj.EndDateTime,
+           User=request.user,
+           ).save()
+    return render(request, "base.html", {"Message": "Poster deleted.", "return": "manager:list"})
 
 
 def edit(request, poster):
@@ -171,5 +189,30 @@ def edit(request, poster):
     :param poster:
     :return:
     """
-    #TODO
-    return None
+    obj = get_object_or_404(Poster, id=poster)
+    if obj.Type == obj.TYPE_IMAGE: #image
+        form = PosterImageFormAdd
+    elif obj.Type == obj.TYPE_VIDEO: #video
+        form = PosterVideoFormAdd
+    else:
+        raise PermissionDenied("Invalid request")
+
+    formin = form(instance=obj)
+
+    if request.method == 'POST':
+        formin = form(request.POST, request.FILES, request=request, instance=obj)
+        if form.is_valid():
+            Change(Change=Change.CHANGE_EDIT,
+                   Poster=obj,
+                   Caption=obj.Caption,
+                   OriginalName=obj.OriginalName,
+                   EndDateTime=obj.EndDateTime,
+                   User=request.user,
+                   ).save()
+            file = form.save(commit=False)
+            file.User = request.user
+            file.save()
+            return render(request, "base.html",
+                          {"Message": "Changes saved", "return": "manager:list"})
+    return render(request, 'GenericForm.html',
+                  {'form': formin, 'formtitle': 'Edit ' + obj.Type.get_status_display() + ' poster', 'buttontext': 'Save'})

@@ -14,22 +14,27 @@ class Poster(models.Model):
     def make_upload_path(instance, filename):
         return 'posters/{}'.format(filename_default(filename))
 
+    TYPE_IMAGE = 1
+    TYPE_VIDEO = 2
+
+    types = (
+        (TYPE_IMAGE, 'Image'),
+        (TYPE_VIDEO, 'Video')
+    )
+
     Caption = models.CharField(max_length=200, blank=True, null=True)
     OriginalName = models.CharField(max_length=200, blank=True, null=True)
     TimeStampCreate = models.DateTimeField(auto_now_add=True)
     TimeStampUpdated = models.DateTimeField(auto_now=True)
     EndDateTime = models.DateTimeField()
-    User = models.ForeignKey(User, related_name='%(class)s') #related name is the lower case classname of inherithor
-
-    class Meta:
-        abstract = True
+    User = models.ForeignKey(User, related_name="posters")
+    Deleted = models.BooleanField(default=False)
+    Image = models.ImageField(default=None, upload_to=make_upload_path)
+    Video = models.FileField(default=None, upload_to=make_upload_path)
+    Type = models.IntegerField(choices=types)
 
     def __str__(self):
         return self.Caption + " " + self.OriginalName
-
-    def save(self, *args, **kwargs):
-        self.OriginalName = self.File.name
-        super(Poster, self).save(*args, **kwargs)
 
     def ext(self):
         return get_ext(self.File.name)
@@ -37,39 +42,31 @@ class Poster(models.Model):
     def metro_icon(self):
         return metro_icon_default(self)
 
-class PosterImage(Poster):
-    """
-    A poster which is an image file, the usual case
-    """
-    File = models.ImageField(default=None, upload_to=Poster.make_upload_path)
-
     def save(self, *args, **kwargs):
+        self.OriginalName = self.File.name
         #remove old image if this is a changed image
         try:
-            this_old = PosterImage.objects.get(id=self.id)
+            this_old = Poster.objects.get(id=self.id)
             if this_old.File != self.File:
                 this_old.File.delete()
         except: #new image object
             pass
-        super(PosterImage, self).save(*args, **kwargs)
-
-
-class PosterOther(Poster):
-    """
-    A poster as other file, possible video or PDF
-    """
-    File = models.FileField(default=None, upload_to=Poster.make_upload_path)
-    def save(self, *args, **kwargs):
-        #remove old attachement if the attachement changed
-        try:
-            this_old = PosterOther.objects.get(id=self.id)
-            if this_old.File != self.File:
-                this_old.File.delete()
-        except:  # new image object
-            pass
-        super(PosterOther, self).save(*args, **kwargs)
+        super(Poster, self).save(*args, **kwargs)
 
 
 @receiver(pre_delete, sender=Poster)
-def student_file_delete(sender, instance, **kwargs):
+def poster_file_delete(sender, instance, **kwargs):
     file_delete_default(sender, instance)
+
+
+class UserMeta(models.Model):
+    User = models.OneToOneField(User, on_delete=models.CASCADE)
+    Banned = models.BooleanField(default=False)
+    Study = models.CharField(max_length=512, null=True, blank=True)
+    Cohort = models.IntegerField(null=True, blank=True)
+    StudentNumber = models.CharField(max_length=10, null=True, blank=True)
+    Initials = models.CharField(max_length=32, null=True, blank=True)
+    FullName = models.CharField(max_length=32, null=True, blank=True)
+
+    def __str__(self):
+        return str(self.User)

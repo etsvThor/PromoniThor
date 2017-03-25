@@ -2,10 +2,10 @@ from django import forms
 from django.conf import settings
 from django.core.files.images import get_image_dimensions
 from django.forms import ValidationError
-from model_general import get_ext
 
-from form_general import clean_file_default, FileForm
-from manager.models import PosterOther, PosterImage
+from form_general import clean_file_default
+from manager.models import Poster
+from model_general import get_ext
 
 #minimal image dimensions.
 minw = 30
@@ -23,8 +23,14 @@ def clean_image_default(self):
                 minh) + "px and is only " + str(
                 w) + "px by " + str(
                 h) + "px.")
-
     return picture
+
+
+def clean_video_default(self):
+    video = clean_file_default(self)
+    if get_ext(video.name) not in settings.ALLOWED_POSTER_VIDEOS:
+        raise ValidationError("This filetype is not allowed. Allowed types: " + str(settings.ALLOWED_PROPOSAL_VIDEOS))
+    #TODO test video length an limit it.
 
 
 def clean_attachment_default(self):
@@ -39,15 +45,38 @@ class LoginForm(forms.Form):
     password = forms.CharField(label='Your password:', max_length=100, min_length=4)
 
 
-class PosterImageFormAdd(FileForm):
-    class Meta(FileForm.Meta):
-        model = PosterImage
-    def clean_File(self):
+class PosterImageFormAdd(forms.ModelForm):
+    class Meta:
+        model = Poster
+        fields = ['Caption',
+                  'EndDateTime',
+                  'Image']
+        labels = {
+            'EndDateTime': "End date/time"
+        }
+
+    def clean_Image(self):
         return clean_image_default(self)
 
 
+class PosterVideoFormAdd(forms.ModelForm):
+    class Meta:
+        model = Poster
+        fields = ['Caption',
+                  'EndDateTime',
+                  'Video']
+        labels = {
+            'EndDateTime': "End date/time"
+        }
+
+    def clean_Video(self):
+        return clean_video_default(self)
+
+
+"""
 class PosterOtherFormAdd(FileForm):
     class Meta(FileForm.Meta):
         model = PosterOther
     def clean_File(self):
-        return clean_attachment_default(self)
+        return clean_file_default(self)
+"""

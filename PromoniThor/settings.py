@@ -36,16 +36,16 @@ INSTALLED_APPS = [
     'index.apps.IndexConfig',
     'templates.apps.TemplatesConfig',
     'manager.apps.ManagerConfig',
+    'changelog.apps.ChangelogConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'captcha',
     'impersonate',
-    'maintenancemode',
     'channels',
+    'imagekit'
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -58,7 +58,6 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'impersonate.middleware.ImpersonateMiddleware',
-    'maintenancemode.middleware.MaintenanceModeMiddleware',
 ]
 
 ROOT_URLCONF = 'PromoniThor.urls'
@@ -164,8 +163,6 @@ MEDIA_URL = '/media/'
 STATIC_URL = '/static/'
 STATIC_ROOT = '/root/PromoniThor/templates/static/'
 
-MAX_NUM_APPLICATIONS = 3
-
 # Host for sending e-mail.
 EMAIL_HOST = '192.168.1.4'
 
@@ -178,18 +175,11 @@ EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_TLS = False
 SERVER_EMAIL = "coco@thor.edu"
 
-RECAPTCHA_PUBLIC_KEY = ''
-RECAPTCHA_PRIVATE_KEY = ''
-NOCAPTCHA = True
-
 SESSION_COOKIE_AGE = 86400
-LOGIN_REDIRECT_URL = '/profile/'
+LOGIN_REDIRECT_URL = '/'
 IMPERSONATE_REQUIRE_SUPERUSER = True
 IMPERSONATE_DISABLE_LOGGING = True
-MAXAGESHARELINK = 60*60*24*7
-EMAILREGEXCHECK = "(^[a-zA-Z0-9]{1}[a-zA-Z0-9_.+-~]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)"
-MAINTENANCE_MODE = False
 
 MAX_UPLOAD_SIZE = 10*1024*1024 #10MB
-ALLOWED_POSTER_OTHER = ['']
+ALLOWED_POSTER_VIDEO = ['mpg']
 ALLOWED_POSTER_IMAGES = ['jpg', 'jpeg', 'png', 'bmp', 'gif']
