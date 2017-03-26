@@ -2,3 +2,7 @@ django
 django-impersonate
 django-redis
 asgi_redis
+django-imagekit
+requests
+requests_ntlm
+lxml

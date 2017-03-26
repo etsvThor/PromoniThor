@@ -12,3 +12,5 @@ media/*
 *.json
 *.bak
 githash
+index/calendar_login.py
+PromoniThor/secret.py

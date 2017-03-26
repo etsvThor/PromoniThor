@@ -1,7 +1,10 @@
-from django.shortcuts import render
-from django.http import JsonResponse
-from manager.models import Poster
 from datetime import datetime
+
+from django.http import JsonResponse
+from django.shortcuts import render
+
+from index.activity_parser import activity_parser
+from manager.models import Poster
 
 def index_viewer(request):
     """
@@ -50,7 +53,7 @@ def load_activities(request):
     :param request:
     :return:
     """
-    return JsonResponse([{"tit":"[THOR] Ivaldi colour party","ass":"thor","loc":False,"sta":1489678200,"end":1489687200,"ald":False}], safe=False)
+    return JsonResponse(activity_parser(), safe=False)
 
 
 def error400(request):
